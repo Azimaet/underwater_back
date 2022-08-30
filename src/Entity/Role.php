@@ -7,18 +7,29 @@ use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Role'],
+    collectionOperations: ['get'],
+    itemOperations: ['get', 'delete', 'put', 'patch']
+)]
 class Role
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Role'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:Role'])]
     private ?string $label = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:Role'])]
+    private ?string $token = null;
 
     #[ORM\OneToMany(mappedBy: 'role', targetEntity: Dive::class)]
     private Collection $dives;
@@ -41,6 +52,18 @@ class Role
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

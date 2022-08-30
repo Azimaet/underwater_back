@@ -7,18 +7,29 @@ use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Type'],
+    collectionOperations: ['get'],
+    itemOperations: ['get', 'delete', 'put', 'patch']
+)]
 class Type
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Type'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:Type'])]
     private ?string $label = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:Type'])]
+    private ?string $token = null;
 
     #[ORM\ManyToMany(targetEntity: Dive::class, mappedBy: 'types')]
     private Collection $dives;
@@ -41,6 +52,18 @@ class Type
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

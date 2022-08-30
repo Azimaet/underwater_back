@@ -7,18 +7,29 @@ use App\Repository\EnvironmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EnvironmentRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => 'read:Environment'],
+    collectionOperations: ['get'],
+    itemOperations: ['get', 'delete', 'put', 'patch']
+)]
 class Environment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Environment'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:Environment'])]
     private ?string $label = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:Environment'])]
+    private ?string $token = null;
 
     #[ORM\OneToMany(mappedBy: 'environment', targetEntity: Dive::class)]
     private Collection $dives;
@@ -41,6 +52,18 @@ class Environment
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
