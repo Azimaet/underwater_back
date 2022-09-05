@@ -3,19 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\TypeRepository;
+use App\Repository\DivingTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: TypeRepository::class)]
+#[ORM\Entity(repositoryClass: DivingTypeRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => 'read:Type'],
     collectionOperations: ['get'],
     itemOperations: ['get', 'delete', 'put', 'patch']
 )]
-class Type
+class DivingType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,7 +31,7 @@ class Type
     #[Groups(['read:Type'])]
     private ?string $token = null;
 
-    #[ORM\ManyToMany(targetEntity: Dive::class, mappedBy: 'types')]
+    #[ORM\ManyToMany(targetEntity: Dive::class, mappedBy: 'divingType')]
     private Collection $dives;
 
     public function __construct()
@@ -80,7 +80,7 @@ class Type
     {
         if (!$this->dives->contains($dive)) {
             $this->dives->add($dive);
-            $dive->addType($this);
+            $dive->addDivingType($this);
         }
 
         return $this;
@@ -89,7 +89,7 @@ class Type
     public function removeDive(Dive $dive): self
     {
         if ($this->dives->removeElement($dive)) {
-            $dive->removeType($this);
+            $dive->removeDivingType($this);
         }
 
         return $this;

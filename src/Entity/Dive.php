@@ -62,25 +62,25 @@ class Dive
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
     private array $gas = [];
 
-    #[ORM\ManyToOne(inversedBy: 'dives')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToMany(targetEntity: DivingType::class, inversedBy: 'dives')]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
-    private ?Environment $environment = null;
+    private Collection $divingType;
 
     #[ORM\ManyToOne(inversedBy: 'dives')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
-    private ?Role $role = null;
+    private ?DivingEnvironment $divingEnvironment = null;
 
-    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'dives')]
+    #[ORM\ManyToOne(inversedBy: 'dives')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
-    private Collection $types;
+    private ?DivingRole $divingRole = null;
 
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
-        $this->types = new ArrayCollection();
+        $this->divingType = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,50 +172,50 @@ class Dive
         return $this;
     }
 
-    public function getEnvironment(): ?Environment
-    {
-        return $this->environment;
-    }
-
-    public function setEnvironment(?Environment $environment): self
-    {
-        $this->environment = $environment;
-
-        return $this;
-    }
-
-    public function getRole(): ?Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(?Role $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Type>
+     * @return Collection<int, DivingType>
      */
-    public function getTypes(): Collection
+    public function getDivingType(): Collection
     {
-        return $this->types;
+        return $this->divingType;
     }
 
-    public function addType(Type $type): self
+    public function addDivingType(DivingType $divingType): self
     {
-        if (!$this->types->contains($type)) {
-            $this->types->add($type);
+        if (!$this->divingType->contains($divingType)) {
+            $this->divingType->add($divingType);
         }
 
         return $this;
     }
 
-    public function removeType(Type $type): self
+    public function removeDivingType(DivingType $divingType): self
     {
-        $this->types->removeElement($type);
+        $this->divingType->removeElement($divingType);
+
+        return $this;
+    }
+
+    public function getDivingEnvironment(): ?DivingEnvironment
+    {
+        return $this->divingEnvironment;
+    }
+
+    public function setDivingEnvironment(?DivingEnvironment $divingEnvironment): self
+    {
+        $this->divingEnvironment = $divingEnvironment;
+
+        return $this;
+    }
+
+    public function getDivingRole(): ?DivingRole
+    {
+        return $this->divingRole;
+    }
+
+    public function setDivingRole(?DivingRole $divingRole): self
+    {
+        $this->divingRole = $divingRole;
 
         return $this;
     }

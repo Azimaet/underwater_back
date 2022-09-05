@@ -3,35 +3,35 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\EnvironmentRepository;
+use App\Repository\DivingRoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: EnvironmentRepository::class)]
+#[ORM\Entity(repositoryClass: DivingRoleRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'read:Environment'],
+    normalizationContext: ['groups' => 'read:Role'],
     collectionOperations: ['get'],
     itemOperations: ['get', 'delete', 'put', 'patch']
 )]
-class Environment
+class DivingRole
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:Role'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:Role'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:Role'])]
     private ?string $token = null;
 
-    #[ORM\OneToMany(mappedBy: 'environment', targetEntity: Dive::class)]
+    #[ORM\OneToMany(mappedBy: 'divingRole', targetEntity: Dive::class)]
     private Collection $dives;
 
     public function __construct()
@@ -80,7 +80,7 @@ class Environment
     {
         if (!$this->dives->contains($dive)) {
             $this->dives->add($dive);
-            $dive->setEnvironment($this);
+            $dive->setDivingRole($this);
         }
 
         return $this;
@@ -90,8 +90,8 @@ class Environment
     {
         if ($this->dives->removeElement($dive)) {
             // set the owning side to null (unless already changed)
-            if ($dive->getEnvironment() === $this) {
-                $dive->setEnvironment(null);
+            if ($dive->getDivingRole() === $this) {
+                $dive->setDivingRole(null);
             }
         }
 
