@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:User'])]
+    #[Groups(['read:User', 'read:Dive'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -42,8 +44,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:User', 'write:User'])]
+    #[Groups(['read:User', 'write:User', 'read:Dive'])]
     private ?string $username = null;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Dive::class, orphanRemoval: true)]
+    #[Groups(['read:User'])]
+    private Collection $dives;
+
+    public function __construct()
+    {
+        $this->dives = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +102,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function hasRoles(string $roles): bool
+    {
+        return in_array($roles, $this->roles);
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -135,6 +151,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dive>
+     */
+    public function getDives(): Collection
+    {
+        return $this->dives;
+    }
+
+    public function addDive(Dive $dive): self
+    {
+        if (!$this->dives->contains($dive)) {
+            $this->dives->add($dive);
+            $dive->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDive(Dive $dive): self
+    {
+        if ($this->dives->removeElement($dive)) {
+            // set the owning side to null (unless already changed)
+            if ($dive->getOwner() === $this) {
+                $dive->setOwner(null);
+            }
+        }
 
         return $this;
     }

@@ -18,12 +18,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations: [
         'get' => [
             'normalization_context' => [
-                'groups' => [
-                    'read:Dives'
-                ]
+                'groups' => ['read:Dives']
             ]
         ],
-        'post'
+        'post' => ['security' => 'is_granted("ROLE_USER")']
+    ],
+    itemOperations: [
+        'get',
+        'put' => ['security' => 'is_granted("edit", object)'],
+        'delete' => ['security' => 'is_granted("delete", object)'],
     ]
 )]
 class Dive
@@ -31,7 +34,7 @@ class Dive
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Dive', 'read:Dives'])]
+    #[Groups(['read:Dive', 'read:Dives', 'read:User'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::GUID)]
@@ -75,6 +78,11 @@ class Dive
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
     private ?DivingRole $divingRole = null;
+
+    #[ORM\ManyToOne(inversedBy: 'dives')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:Dive'])]
+    private ?User $owner = null;
 
     public function __construct()
     {
@@ -216,6 +224,18 @@ class Dive
     public function setDivingRole(?DivingRole $divingRole): self
     {
         $this->divingRole = $divingRole;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
