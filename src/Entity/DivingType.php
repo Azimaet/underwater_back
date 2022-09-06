@@ -11,24 +11,32 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DivingTypeRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'read:Type'],
-    collectionOperations: ['get'],
-    itemOperations: ['get', 'delete', 'put', 'patch']
+    normalizationContext: ['groups' => 'read:DiveTheme'],
+    denormalizationContext: ['groups' => 'write:DiveTheme'],
+    collectionOperations: [
+        'get',
+        'post' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")']
+    ],
+    itemOperations: [
+        'get',
+        'delete' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")'],
+        'put' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")']
+    ]
 )]
 class DivingType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Type'])]
+    #[Groups(['read:DiveTheme'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Type'])]
+    #[Groups(['read:DiveTheme', 'write:DiveTheme'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Type'])]
+    #[Groups(['read:DiveTheme', 'write:DiveTheme'])]
     private ?string $token = null;
 
     #[ORM\ManyToMany(targetEntity: Dive::class, mappedBy: 'divingType')]

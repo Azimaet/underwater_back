@@ -16,11 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => 'read:Dive'],
     denormalizationContext: ['groups' => 'write:Dive'],
     collectionOperations: [
-        'get' => [
-            'normalization_context' => [
-                'groups' => ['read:Dives']
-            ]
-        ],
+        'get' => ['normalization_context' => ['groups' => ['read:Dives']]],
         'post' => ['security' => 'is_granted("ROLE_USER")']
     ],
     itemOperations: [

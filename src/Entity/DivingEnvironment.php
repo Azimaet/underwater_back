@@ -11,24 +11,32 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DivingEnvironmentRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => 'read:Environment'],
-    collectionOperations: ['get'],
-    itemOperations: ['get', 'delete', 'put', 'patch']
+    normalizationContext: ['groups' => 'read:DiveTheme'],
+    denormalizationContext: ['groups' => 'write:DiveTheme'],
+    collectionOperations: [
+        'get',
+        'post' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")']
+    ],
+    itemOperations: [
+        'get',
+        'delete' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")'],
+        'put' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")']
+    ]
 )]
 class DivingEnvironment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:DiveTheme'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:DiveTheme', 'write:DiveTheme'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Environment'])]
+    #[Groups(['read:DiveTheme', 'write:DiveTheme'])]
     private ?string $token = null;
 
     #[ORM\OneToMany(mappedBy: 'divingEnvironment', targetEntity: Dive::class)]
