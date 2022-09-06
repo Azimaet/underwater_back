@@ -26,6 +26,11 @@ security:
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
     jwt: ~
 
+  role_hierarchy:
+    ROLE_CLIENT: ROLE_USER
+    ROLE_ADMIN: ROLE_USER
+    ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN]
+
   access_control:
     - { path: ^/api/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
     - { path: ^/authentication_token, roles: PUBLIC_ACCESS }

@@ -10,10 +10,10 @@ use Exception;
 class DivingTypeFixtures extends Fixture
 {
     const ENV_LABELS = [
-        'Dive', 
-        'Cave Diving', 
-        'Ice Diving', 
-        'Shipwreck Diving', 
+        'Dive',
+        'Cave Diving',
+        'Ice Diving',
+        'Shipwreck Diving',
         'Drift Diving',
         'Rescue',
         'Wildlife Rescue',
@@ -21,12 +21,12 @@ class DivingTypeFixtures extends Fixture
         'Technical and Operations',
         'Nightdiving'
     ];
-    
+
     const ENV_TOKENS = [
-        'default', 
-        'cave', 
-        'ice', 
-        'wreck', 
+        'default',
+        'cave',
+        'ice',
+        'wreck',
         'drift',
         'rescue',
         'wildlife',
@@ -39,18 +39,18 @@ class DivingTypeFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        if (count(self::ENV_TOKENS) !== count(self::ENV_LABELS)){
+        if (count(self::ENV_TOKENS) !== count(self::ENV_LABELS)) {
             throw new Exception('Numbers of Labels and Tokens not identical. Abort persistence of dataFixtures on Database');
         }
-        
+
         for ($i = 0; $i < count(self::ENV_TOKENS); $i++) {
-            $role = new DivingType();
+            $type = new DivingType();
             $label = self::ENV_LABELS[$i];
             $token = self::MARKER . self::ENV_TOKENS[$i] . self::MARKER;
 
-            $role->setLabel($label);
-            $role->setToken($token);
-            $manager->persist($role);
+            $type->setLabel($label);
+            $type->setToken($token);
+            $manager->persist($type);
         }
 
         $manager->flush();
