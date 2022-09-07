@@ -34,7 +34,7 @@ class Dive
     private ?int $id = null;
 
     #[ORM\Column(type: Types::GUID)]
-    #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
+    #[Groups(['read:Dive', 'read:Dives'])]
     private ?string $uuid = null;
 
     #[ORM\Column]

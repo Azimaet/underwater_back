@@ -17,7 +17,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
     normalizationContext: ['groups' => 'read:User'],
     denormalizationContext: ['groups' => 'write:User'],
     collectionOperations: [
-        'get' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")'],
+        'get' => ['security' => 'is_granted("ROLE_ADMIN")'],
         'post',
     ],
     itemOperations: [

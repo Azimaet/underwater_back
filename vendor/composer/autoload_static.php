@@ -72,6 +72,7 @@ class ComposerStaticInit3012a856f0d34fbe57b883d16ad35b53
             'Symfony\\Component\\Config\\' => 25,
             'Symfony\\Component\\Cache\\' => 24,
             'Symfony\\Component\\Asset\\' => 24,
+            'Symfony\\Bundle\\WebProfilerBundle\\' => 33,
             'Symfony\\Bundle\\TwigBundle\\' => 26,
             'Symfony\\Bundle\\SecurityBundle\\' => 30,
             'Symfony\\Bundle\\MakerBundle\\' => 27,
@@ -311,6 +312,10 @@ class ComposerStaticInit3012a856f0d34fbe57b883d16ad35b53
         'Symfony\\Component\\Asset\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/asset',
+        ),
+        'Symfony\\Bundle\\WebProfilerBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/web-profiler-bundle',
         ),
         'Symfony\\Bundle\\TwigBundle\\' => 
         array (
@@ -996,6 +1001,7 @@ class ComposerStaticInit3012a856f0d34fbe57b883d16ad35b53
         'App\\DataFixtures\\DivingEnvironmentFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/DivingEnvironmentFixtures.php',
         'App\\DataFixtures\\DivingRoleFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/DivingRoleFixtures.php',
         'App\\DataFixtures\\DivingTypeFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/DivingTypeFixtures.php',
+        'App\\DataFixtures\\UserFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/UserFixtures.php',
         'App\\DataPersister\\DiveDataPersister' => __DIR__ . '/../..' . '/src/DataPersister/DiveDataPersister.php',
         'App\\DataPersister\\UserDataPersister' => __DIR__ . '/../..' . '/src/DataPersister/UserDataPersister.php',
         'App\\Entity\\Dive' => __DIR__ . '/../..' . '/src/Entity/Dive.php',
@@ -1009,6 +1015,8 @@ class ComposerStaticInit3012a856f0d34fbe57b883d16ad35b53
         'App\\Repository\\DivingRoleRepository' => __DIR__ . '/../..' . '/src/Repository/DivingRoleRepository.php',
         'App\\Repository\\DivingTypeRepository' => __DIR__ . '/../..' . '/src/Repository/DivingTypeRepository.php',
         'App\\Repository\\UserRepository' => __DIR__ . '/../..' . '/src/Repository/UserRepository.php',
+        'App\\Security\\Voter\\DiveVoter' => __DIR__ . '/../..' . '/src/Security/Voter/DiveVoter.php',
+        'App\\Security\\Voter\\UserVoter' => __DIR__ . '/../..' . '/src/Security/Voter/UserVoter.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Doctrine\\Bundle\\DoctrineBundle\\Attribute\\AsEntityListener' => __DIR__ . '/..' . '/doctrine/doctrine-bundle/Attribute/AsEntityListener.php',
         'Doctrine\\Bundle\\DoctrineBundle\\Attribute\\AsMiddleware' => __DIR__ . '/..' . '/doctrine/doctrine-bundle/Attribute/AsMiddleware.php',
@@ -3270,6 +3278,17 @@ class ComposerStaticInit3012a856f0d34fbe57b883d16ad35b53
         'Symfony\\Bundle\\TwigBundle\\DependencyInjection\\TwigExtension' => __DIR__ . '/..' . '/symfony/twig-bundle/DependencyInjection/TwigExtension.php',
         'Symfony\\Bundle\\TwigBundle\\TemplateIterator' => __DIR__ . '/..' . '/symfony/twig-bundle/TemplateIterator.php',
         'Symfony\\Bundle\\TwigBundle\\TwigBundle' => __DIR__ . '/..' . '/symfony/twig-bundle/TwigBundle.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ExceptionPanelController' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Controller/ExceptionPanelController.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ProfilerController' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Controller/ProfilerController.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Controller\\RouterController' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Controller/RouterController.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Csp\\ContentSecurityPolicyHandler' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Csp/ContentSecurityPolicyHandler.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Csp\\NonceGenerator' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Csp/NonceGenerator.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/DependencyInjection/Configuration.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\DependencyInjection\\WebProfilerExtension' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/DependencyInjection/WebProfilerExtension.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\EventListener\\WebDebugToolbarListener' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/EventListener/WebDebugToolbarListener.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Profiler\\TemplateManager' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Profiler/TemplateManager.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/Twig/WebProfilerExtension.php',
+        'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle' => __DIR__ . '/..' . '/symfony/web-profiler-bundle/WebProfilerBundle.php',
         'Symfony\\Component\\Asset\\Context\\ContextInterface' => __DIR__ . '/..' . '/symfony/asset/Context/ContextInterface.php',
         'Symfony\\Component\\Asset\\Context\\NullContext' => __DIR__ . '/..' . '/symfony/asset/Context/NullContext.php',
         'Symfony\\Component\\Asset\\Context\\RequestStackContext' => __DIR__ . '/..' . '/symfony/asset/Context/RequestStackContext.php',
