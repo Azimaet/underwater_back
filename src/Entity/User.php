@@ -2,20 +2,29 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => 'read:User'],
     denormalizationContext: ['groups' => 'write:User'],
+    collectionOperations: [
+        'get' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")'],
+        'post',
+    ],
+    itemOperations: [
+        'get' => ['security' => 'is_granted("ROLE_USER")'],
+        'put' => ['security' => 'is_granted("USER_EDIT", object)'],
+        'delete' => ['security' => 'is_granted("USER_DELETE", object)'],
+    ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

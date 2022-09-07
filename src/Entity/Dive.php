@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\DiveRepository;
-use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use DateTimeImmutable;
+use App\Repository\DiveRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: DiveRepository::class)]
 #[ApiResource(
@@ -21,8 +21,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     itemOperations: [
         'get',
-        'put' => ['security' => 'is_granted("edit", object)'],
-        'delete' => ['security' => 'is_granted("delete", object)'],
+        'put' => ['security' => 'is_granted("DIVE_EDIT", object)'],
+        'delete' => ['security' => 'is_granted("DIVE_DELETE", object)'],
     ]
 )]
 class Dive
