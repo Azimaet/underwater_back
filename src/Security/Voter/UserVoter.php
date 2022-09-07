@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Entity\User;
 
-class DiveVoter extends Voter
+class UserVoter extends Voter
 {
     public const USER_EDIT = 'USER_EDIT';
     public const USER_DELETE = 'USER_DELETE';
