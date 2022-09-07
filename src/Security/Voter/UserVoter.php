@@ -21,6 +21,7 @@ class UserVoter extends Voter
     protected function voteOnAttribute(string $attribute, $targeted_user, TokenInterface $token): bool
     {
         $user = $token->getUser();
+
         if (!$user instanceof UserInterface) {
             return false;
         }
@@ -41,8 +42,10 @@ class UserVoter extends Voter
     {
         if (
             $user === $targeted_user ||
-            $user->hasRoles('ROLE_SUPER_ADMIN') ||
-            $targeted_user->hasRoles('ROLE_USER') && ($user->hasRoles('ROLE_ADMIN'))
+            $user->hasRole('ROLE_SUPER_ADMIN') ||
+            ($user->hasRole('ROLE_ADMIN') &&
+                !($targeted_user->hasRole('ROLE_ADMIN') || $targeted_user->hasRole('ROLE_SUPER_ADMIN'))
+            )
         ) {
             return true;
         }
@@ -54,8 +57,10 @@ class UserVoter extends Voter
     {
         if (
             $user === $targeted_user ||
-            $user->hasRoles('ROLE_SUPER_ADMIN') ||
-            $targeted_user->hasRoles('ROLE_USER') && ($user->hasRoles('ROLE_ADMIN'))
+            $user->hasRole('ROLE_SUPER_ADMIN') ||
+            ($user->hasRole('ROLE_ADMIN') &&
+                !($targeted_user->hasRole('ROLE_ADMIN') || $targeted_user->hasRole('ROLE_SUPER_ADMIN'))
+            )
         ) {
             return true;
         }

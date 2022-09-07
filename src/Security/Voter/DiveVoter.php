@@ -44,7 +44,7 @@ class DiveVoter extends Voter
 
     private function canEdit(Dive $dive, User $user)
     {
-        if ($user === $dive->getOwner() || $user->hasRoles('ROLE_ADMIN')) {
+        if ($user === $dive->getOwner() || $user->hasRole('ROLE_SUPER_ADMIN')) {
             return true;
         }
 
@@ -53,7 +53,7 @@ class DiveVoter extends Voter
 
     private function canDelete(Dive $dive, User $user)
     {
-        if ($user === $dive->getOwner() || $user->hasRoles('ROLE_ADMIN')) {
+        if ($user === $dive->getOwner() || $user->hasRole('ROLE_SUPER_ADMIN')) {
             return true;
         }
 
