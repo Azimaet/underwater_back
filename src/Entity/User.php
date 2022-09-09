@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +15,7 @@ use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email', 'username')]
 #[ApiResource(
     normalizationContext: ['groups' => 'read:User'],
     denormalizationContext: ['groups' => 'write:User'],
@@ -36,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['read:User', 'write:User'])]
+    #[Assert\Email()]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -52,8 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[SerializedName('password')]
     private ?string $plainPassword = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true)]
     #[Groups(['read:User', 'write:User', 'read:Dive'])]
+    #[Assert\Length(min: 3, max: 50)]
     private ?string $username = null;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Dive::class, orphanRemoval: true)]

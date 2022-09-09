@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTimeImmutable;
+use App\Validator\SumOfRanges;
 use App\Repository\DiveRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
@@ -59,6 +61,29 @@ class Dive
 
     #[ORM\Column]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
+    #[Assert\All([
+        new Assert\Collection([
+            'start_pressure' => new Assert\Type('integer'),
+            'end_pressure' => new Assert\Type('integer'),
+            'gas_mix' => [
+                new SumOfRanges(limit: 100),
+                new Assert\Collection([
+                    'oxygen' => [
+                        new Assert\Type('integer'),
+                        new Assert\Range(min: 0, max: 100)
+                    ],
+                    'nitrogen' => [
+                        new Assert\Type('integer'),
+                        new Assert\Range(min: 0, max: 100)
+                    ],
+                    'helium' => [
+                        new Assert\Type('integer'),
+                        new Assert\Range(min: 0, max: 100)
+                    ]
+                ])
+            ]
+        ]),
+    ])]
     private array $gas = [];
 
     #[ORM\ManyToMany(targetEntity: DivingType::class, inversedBy: 'dives')]
