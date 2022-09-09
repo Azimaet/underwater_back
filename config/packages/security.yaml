@@ -1,40 +1,42 @@
 security:
-  # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
   password_hashers:
     App\Entity\User: "auto"
+
   enable_authenticator_manager: true
+
   providers:
     app_user_provider:
       entity:
         class: App\Entity\User
         property: email
+
   firewalls:
     dev:
       pattern: ^/_(profiler|wdt)
       security: false
     api:
-      pattern: ^/api/
       stateless: true
       provider: app_user_provider
-      jwt: ~
-    main:
+      pattern: ^/api
+      entry_point: jwt
       json_login:
-        check_path: /authentication_token
+        check_path: /api/login
         username_path: email
         password_path: password
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
-    jwt: ~
+      jwt: ~
+      refresh_jwt:
+        check_path: /api/refresh_token
 
   role_hierarchy:
-    ROLE_CLIENT: ROLE_USER
     ROLE_ADMIN: ROLE_USER
     ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN]
 
   access_control:
     - { path: ^/api/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
-    - { path: ^/authentication_token, roles: PUBLIC_ACCESS }
-    # { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/refresh_token, roles: PUBLIC_ACCESS }
 
 when@test:
   security:

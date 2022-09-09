@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '87f1c1f81a76b1d091ed3ecdf0756a93e17fbcde',
+        'reference' => '63b962ef2e28b46f89ff1477d813f44893c5ec15',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '87f1c1f81a76b1d091ed3ecdf0756a93e17fbcde',
+            'reference' => '63b962ef2e28b46f89ff1477d813f44893c5ec15',
             'dev_requirement' => false,
         ),
         'api-platform/core' => array(
@@ -206,6 +206,15 @@
             'install_path' => __DIR__ . '/../friendsofphp/proxy-manager-lts',
             'aliases' => array(),
             'reference' => '8419f0158715b30d4b99a5bd37c6a39671994ad7',
+            'dev_requirement' => false,
+        ),
+        'gesdinet/jwt-refresh-token-bundle' => array(
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../gesdinet/jwt-refresh-token-bundle',
+            'aliases' => array(),
+            'reference' => '8970ae1a602fb74e434964d03c969d883cfed376',
             'dev_requirement' => false,
         ),
         'laminas/laminas-code' => array(
