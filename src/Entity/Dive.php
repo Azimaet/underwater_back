@@ -14,7 +14,8 @@ use App\Repository\DiveRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: DiveRepository::class)]
-#[ApiResource(
+// API Rest Operations config
+/* #[ApiResource(
     normalizationContext: ['groups' => 'read:Dive'],
     denormalizationContext: ['groups' => 'write:Dive'],
     collectionOperations: [
@@ -25,6 +26,42 @@ use ApiPlatform\Core\Annotation\ApiResource;
         'get',
         'put' => ['security' => 'is_granted("DIVE_EDIT", object)'],
         'delete' => ['security' => 'is_granted("DIVE_DELETE", object)'],
+    ]
+)] */
+
+// API GraphQL Operations config
+#[ApiResource(
+    graphql: [
+        //queries
+        'item_query' => [
+            'normalization_context' => [
+                'groups' => ['read:Dive']
+            ]
+        ],
+        'collection_query' => [
+            'normalization_context' => [
+                'groups' => ['read:Dives']
+            ],
+            'denormalizationContext' => [
+                'groups' => ['write:Dive']
+            ]
+        ],
+        //mutations
+        'create' => [
+            'denormalization_context' => [
+                'groups' => ['write:Dive']
+            ],
+            'security' => 'is_granted("ROLE_USER")'
+        ],
+        'update' => [
+            'denormalization_context' => [
+                'groups' => ['write:Dive']
+            ],
+            'security' => 'is_granted("DIVE_EDIT", object)'
+        ],
+        'delete' => [
+            'security' => 'is_granted("DIVE_DELETE", object)'
+        ]
     ]
 )]
 class Dive

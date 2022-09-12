@@ -15,8 +15,10 @@ use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email', 'username')]
-#[ApiResource(
+#[UniqueEntity(['email'])]
+#[UniqueEntity(['username'])]
+// API Rest Operations config
+/* #[ApiResource(
     normalizationContext: ['groups' => 'read:User'],
     denormalizationContext: ['groups' => 'write:User'],
     collectionOperations: [
@@ -27,6 +29,41 @@ use ApiPlatform\Core\Annotation\ApiResource;
         'get' => ['security' => 'is_granted("ROLE_USER")'],
         'put' => ['security' => 'is_granted("USER_EDIT", object)'],
         'delete' => ['security' => 'is_granted("USER_DELETE", object)'],
+    ]
+)] */
+
+// API GraphQL Operations config
+#[ApiResource(
+    graphql: [
+        //queries
+        'item_query' => [
+            'normalization_context' => [
+                'groups' => ['read:User']
+            ]
+        ],
+        'collection_query' => [
+            'normalization_context' => [
+                'groups' => ['read:Users']
+            ],
+            'denormalizationContext' => [
+                'groups' => ['write:User']
+            ]
+        ],
+        //mutations
+        'create' => [
+            'denormalization_context' => [
+                'groups' => ['write:User']
+            ]
+        ],
+        'update' => [
+            'denormalization_context' => [
+                'groups' => ['write:User']
+            ],
+            'security' => 'is_granted("USER_EDIT", object)'
+        ],
+        'delete' => [
+            'security' => 'is_granted("USER_DELETE", object)'
+        ]
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

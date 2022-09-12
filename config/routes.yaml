@@ -6,3 +6,6 @@ authentication_token:
   methods: ["POST"]
 api_refresh_token:
   path: /api/refresh_token
+api_graphql_entrypoint:
+  path: /api/graphql
+  controller: api_platform.graphql.action.entrypoint

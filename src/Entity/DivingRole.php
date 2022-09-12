@@ -10,7 +10,8 @@ use App\Repository\DivingRoleRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: DivingRoleRepository::class)]
-#[ApiResource(
+// API Rest Operations config
+/* #[ApiResource(
     normalizationContext: ['groups' => 'read:DiveTheme'],
     denormalizationContext: ['groups' => 'write:DiveTheme'],
     collectionOperations: [
@@ -21,6 +22,42 @@ use ApiPlatform\Core\Annotation\ApiResource;
         'get',
         'delete' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")'],
         'put' => ['security' => 'is_granted("ROLE_SUPER_ADMIN")']
+    ]
+)] */
+
+// API GraphQL Operations config
+#[ApiResource(
+    graphql: [
+        //queries
+        'item_query' => [
+            'normalization_context' => [
+                'groups' => ['read:DiveTheme']
+            ]
+        ],
+        'collection_query' => [
+            'normalization_context' => [
+                'groups' => ['read:DiveThemes']
+            ],
+            'denormalizationContext' => [
+                'groups' => ['write:DiveTheme']
+            ]
+        ],
+        //mutations
+        'create' => [
+            'denormalization_context' => [
+                'groups' => ['write:DiveTheme']
+            ],
+            'security' => 'is_granted("ROLE_SUPER_ADMIN")'
+        ],
+        'update' => [
+            'denormalization_context' => [
+                'groups' => ['write:DiveTheme']
+            ],
+            'security' => 'is_granted("ROLE_SUPER_ADMIN")'
+        ],
+        'delete' => [
+            'security' => 'is_granted("ROLE_SUPER_ADMIN")'
+        ]
     ]
 )]
 class DivingRole

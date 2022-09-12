@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '63b962ef2e28b46f89ff1477d813f44893c5ec15',
+        'reference' => 'a817a1a965c7b51ca17a2a57bbf201ed0ab8db56',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '63b962ef2e28b46f89ff1477d813f44893c5ec15',
+            'reference' => 'a817a1a965c7b51ca17a2a57bbf201ed0ab8db56',
             'dev_requirement' => false,
         ),
         'api-platform/core' => array(
@@ -930,6 +930,15 @@
             'install_path' => __DIR__ . '/../webmozart/assert',
             'aliases' => array(),
             'reference' => '11cb2199493b2f8a3b53e7f19068fc6aac760991',
+            'dev_requirement' => false,
+        ),
+        'webonyx/graphql-php' => array(
+            'pretty_version' => 'v14.11.6',
+            'version' => '14.11.6.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../webonyx/graphql-php',
+            'aliases' => array(),
+            'reference' => '6070542725b61fc7d0654a8a9855303e5e157434',
             'dev_requirement' => false,
         ),
         'willdurand/negotiation' => array(

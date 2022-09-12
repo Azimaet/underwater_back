@@ -2,10 +2,10 @@
 
 namespace App\DataPersister;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 
 class UserDataPersister implements ContextAwareDataPersisterInterface
 {
