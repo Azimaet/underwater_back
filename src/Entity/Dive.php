@@ -100,9 +100,9 @@ class Dive
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
     #[Assert\All([
         new Assert\Collection([
-            'start_pressure' => new Assert\Type('integer'),
-            'end_pressure' => new Assert\Type('integer'),
-            'gas_mix' => [
+            'pressureStart' => new Assert\Type('integer'),
+            'pressureEnd' => new Assert\Type('integer'),
+            'gasMix' => [
                 new SumOfRanges(limit: 100),
                 new Assert\Collection([
                     'oxygen' => [
@@ -121,7 +121,7 @@ class Dive
             ]
         ]),
     ])]
-    private array $gas = [];
+    private array $gasTanks = [];
 
     #[ORM\ManyToMany(targetEntity: DivingType::class, inversedBy: 'dives')]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
@@ -226,14 +226,14 @@ class Dive
         return $this;
     }
 
-    public function getGas(): array
+    public function getGasTanks(): array
     {
-        return $this->gas;
+        return $this->gasTanks;
     }
 
-    public function setGas(array $gas): self
+    public function setGasTanks(array $gasTanks): self
     {
-        $this->gas = $gas;
+        $this->gasTanks = $gasTanks;
 
         return $this;
     }
