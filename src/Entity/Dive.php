@@ -11,59 +11,42 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DateTimeImmutable;
 use App\Validator\SumOfRanges;
 use App\Repository\DiveRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
+#[
+    ApiResource(graphQlOperations: [
+        new Query(
+            name: 'item_query',
+            normalizationContext: ['groups' => ['read:Dive']]
+        ),
+        new QueryCollection(
+            name: 'collection_query',
+            normalizationContext: ['groups' => ['read:Dives']],
+            denormalizationContext: ['groups' => ['write:Dive']]
+        ),
+        new Mutation(
+            name: 'create',
+            denormalizationContext: ['groups' => ['write:Dive']],
+            security: 'is_granted("ROLE_USER")'
+        ),
+        new Mutation(
+            name: 'update',
+            denormalizationContext: ['groups' => ['write:Dive']],
+            security: 'is_granted("DIVE_EDIT", object)'
+        ),
+        new Mutation(
+            name: 'delete',
+            security: 'is_granted("DIVE_DELETE", object)'
+        )
+    ])
+]
 #[ORM\Entity(repositoryClass: DiveRepository::class)]
-// API Rest Operations config
-/* #[ApiResource(
-    normalizationContext: ['groups' => 'read:Dive'],
-    denormalizationContext: ['groups' => 'write:Dive'],
-    collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => ['read:Dives']]],
-        'post' => ['security' => 'is_granted("ROLE_USER")']
-    ],
-    itemOperations: [
-        'get',
-        'put' => ['security' => 'is_granted("DIVE_EDIT", object)'],
-        'delete' => ['security' => 'is_granted("DIVE_DELETE", object)'],
-    ]
-)] */
-
-// API GraphQL Operations config
-#[ApiResource(
-    graphql: [
-        //queries
-        'item_query' => [
-            'normalization_context' => [
-                'groups' => ['read:Dive']
-            ]
-        ],
-        'collection_query' => [
-            'normalization_context' => [
-                'groups' => ['read:Dives']
-            ],
-            'denormalizationContext' => [
-                'groups' => ['write:Dive']
-            ]
-        ],
-        //mutations
-        'create' => [
-            'denormalization_context' => [
-                'groups' => ['write:Dive']
-            ],
-            'security' => 'is_granted("ROLE_USER")'
-        ],
-        'update' => [
-            'denormalization_context' => [
-                'groups' => ['write:Dive']
-            ],
-            'security' => 'is_granted("DIVE_EDIT", object)'
-        ],
-        'delete' => [
-            'security' => 'is_granted("DIVE_DELETE", object)'
-        ]
-    ]
-)]
+#[ApiFilter(SearchFilter::class, properties: ['owner' => 'exact'])]
 class Dive
 {
     #[ORM\Id]

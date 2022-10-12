@@ -75,7 +75,6 @@ return array(
     'Laminas\\Code\\' => array($vendorDir . '/laminas/laminas-code/src'),
     'GraphQL\\' => array($vendorDir . '/webonyx/graphql-php/src'),
     'Gesdinet\\JWTRefreshTokenBundle\\' => array($vendorDir . '/gesdinet/jwt-refresh-token-bundle'),
-    'Fig\\Link\\' => array($vendorDir . '/fig/link-util/src'),
     'Doctrine\\SqlFormatter\\' => array($vendorDir . '/doctrine/sql-formatter/src'),
     'Doctrine\\Persistence\\' => array($vendorDir . '/doctrine/persistence/src/Persistence'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib/Doctrine/ORM'),
@@ -95,5 +94,5 @@ return array(
     'Doctrine\\Bundle\\DoctrineBundle\\' => array($vendorDir . '/doctrine/doctrine-bundle'),
     'App\\Tests\\' => array($baseDir . '/tests'),
     'App\\' => array($baseDir . '/src'),
-    'ApiPlatform\\Core\\' => array($vendorDir . '/api-platform/core/src'),
+    'ApiPlatform\\' => array($vendorDir . '/api-platform/core/src'),
 );

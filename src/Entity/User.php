@@ -12,60 +12,40 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\UserRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\Mutation;
+use ApiPlatform\Metadata\ApiResource;
 
+#[
+    ApiResource(graphQlOperations: [
+        new Query(
+            name: 'item_query',
+            normalizationContext: ['groups' => ['read:User']]
+        ),
+        new QueryCollection(
+            name: 'collection_query',
+            normalizationContext: ['groups' => ['read:Users']],
+            denormalizationContext: ['groups' => ['write:User']]
+        ),
+        new Mutation(
+            name: 'create',
+            denormalizationContext: ['groups' => ['write:User']]
+        ),
+        new Mutation(
+            name: 'update',
+            denormalizationContext: ['groups' => ['write:User']],
+            security: 'is_granted("USER_EDIT", object)'
+        ),
+        new Mutation(
+            name: 'delete',
+            security: 'is_granted("USER_DELETE", object)'
+        )
+    ])
+]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(['email'])]
 #[UniqueEntity(['username'])]
-// API Rest Operations config
-/* #[ApiResource(
-    normalizationContext: ['groups' => 'read:User'],
-    denormalizationContext: ['groups' => 'write:User'],
-    collectionOperations: [
-        'get' => ['security' => 'is_granted("ROLE_ADMIN")'],
-        'post',
-    ],
-    itemOperations: [
-        'get' => ['security' => 'is_granted("ROLE_USER")'],
-        'put' => ['security' => 'is_granted("USER_EDIT", object)'],
-        'delete' => ['security' => 'is_granted("USER_DELETE", object)'],
-    ]
-)] */
-
-// API GraphQL Operations config
-#[ApiResource(
-    graphql: [
-        //queries
-        'item_query' => [
-            'normalization_context' => [
-                'groups' => ['read:User']
-            ]
-        ],
-        'collection_query' => [
-            'normalization_context' => [
-                'groups' => ['read:Users']
-            ],
-            'denormalizationContext' => [
-                'groups' => ['write:User']
-            ]
-        ],
-        //mutations
-        'create' => [
-            'denormalization_context' => [
-                'groups' => ['write:User']
-            ]
-        ],
-        'update' => [
-            'denormalization_context' => [
-                'groups' => ['write:User']
-            ],
-            'security' => 'is_granted("USER_EDIT", object)'
-        ],
-        'delete' => [
-            'security' => 'is_granted("USER_DELETE", object)'
-        ]
-    ]
-)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -73,57 +53,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['read:User', 'read:Dive'])]
     private ?int $id = null;
-
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['read:User', 'write:User'])]
-    #[Assert\Email()]
+    #[Assert\Email]
     private ?string $email = null;
-
     #[ORM\Column]
     #[Groups(['read:User'])]
     private array $roles = [];
-
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
-
     #[Groups(['write:User'])]
     #[SerializedName('password')]
     private ?string $plainPassword = null;
-
-    #[ORM\Column(length: 255, unique:true)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['read:User', 'write:User', 'read:Dive'])]
     #[Assert\Length(min: 3, max: 50)]
     private ?string $username = null;
-
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Dive::class, orphanRemoval: true)]
     #[Groups(['read:User'])]
     private Collection $dives;
-
     public function __construct()
     {
         $this->dives = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getEmail(): ?string
     {
         return $this->email;
     }
-
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
-
     /**
      * A visual identifier that represents this user.
      *
@@ -133,7 +101,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->email;
     }
-
     /**
      * @see UserInterface
      */
@@ -142,22 +109,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
-
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
-
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles());
     }
-
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -165,27 +127,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->password;
     }
-
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
-
-
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
-
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
-
         return $this;
     }
-
     /**
      * @see UserInterface
      */
@@ -193,19 +148,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = null;
     }
-
     public function getUsername(): ?string
     {
         return $this->username;
     }
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
-
     /**
      * @return Collection<int, Dive>
      */
@@ -213,17 +164,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->dives;
     }
-
     public function addDive(Dive $dive): self
     {
         if (!$this->dives->contains($dive)) {
             $this->dives->add($dive);
             $dive->setOwner($this);
         }
-
         return $this;
     }
-
     public function removeDive(Dive $dive): self
     {
         if ($this->dives->removeElement($dive)) {
@@ -232,7 +180,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $dive->setOwner(null);
             }
         }
-
         return $this;
     }
 }
