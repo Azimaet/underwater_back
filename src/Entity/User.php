@@ -30,12 +30,14 @@ use ApiPlatform\Metadata\ApiResource;
         ),
         new Mutation(
             name: 'create',
-            denormalizationContext: ['groups' => ['write:User']]
+            denormalizationContext: ['groups' => ['write:User']],
+            processor: UserStateProcessor::class
         ),
         new Mutation(
             name: 'update',
             denormalizationContext: ['groups' => ['write:User']],
-            security: 'is_granted("USER_EDIT", object)'
+            security: 'is_granted("USER_EDIT", object)',
+            processor: UserStateProcessor::class
         ),
         new Mutation(
             name: 'delete',

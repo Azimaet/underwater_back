@@ -1,13 +1,13 @@
 <?php
 
-namespace App\DataPersister;
+namespace App\State;
 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\User;
-use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
+use ApiPlatform\State\ProcessorInterface;
+use ApiPlatform\Metadata\Operation;
 
-class UserDataPersister implements ContextAwareDataPersisterInterface
+class UserStateProcessor implements ProcessorInterface
 {
     private $_entityManager;
     private $_passwordEncoder;
@@ -20,18 +20,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
         $this->_passwordEncoder = $passwordEncoder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($data, array $context = []): bool
-    {
-        return $data instanceof User;
-    }
-
-    /**
-     * @param User $data
-     */
-    public function persist($data, array $context = [])
+    public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         if ($data->getPlainPassword()) {
             $data->setPassword(
@@ -46,14 +35,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
 
         $this->_entityManager->persist($data);
         $this->_entityManager->flush();
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($data, array $context = [])
-    {
-        $this->_entityManager->remove($data);
-        $this->_entityManager->flush();
+        return $data;
     }
 }

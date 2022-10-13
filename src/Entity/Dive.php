@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTimeImmutable;
 use App\Validator\SumOfRanges;
+use App\State\DiveStateProcessor;
 use App\Repository\DiveRepository;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
@@ -32,12 +33,14 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
         new Mutation(
             name: 'create',
             denormalizationContext: ['groups' => ['write:Dive']],
-            security: 'is_granted("ROLE_USER")'
+            security: 'is_granted("ROLE_USER")',
+            processor: DiveStateProcessor::class
         ),
         new Mutation(
             name: 'update',
             denormalizationContext: ['groups' => ['write:Dive']],
-            security: 'is_granted("DIVE_EDIT", object)'
+            security: 'is_granted("DIVE_EDIT", object)',
+            processor: DiveStateProcessor::class
         ),
         new Mutation(
             name: 'delete',
