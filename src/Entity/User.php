@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\State\UserStateProcessor;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
@@ -55,28 +56,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['read:User', 'read:Dive'])]
     private ?int $id = null;
+
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['read:User', 'write:User'])]
     #[Assert\Email]
     private ?string $email = null;
+
     #[ORM\Column]
     #[Groups(['read:User'])]
     private array $roles = [];
+
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
+
     #[Groups(['write:User'])]
     #[SerializedName('password')]
     private ?string $plainPassword = null;
+
     #[ORM\Column(length: 255, unique: true)]
     #[Groups(['read:User', 'write:User', 'read:Dive'])]
     #[Assert\Length(min: 3, max: 50)]
     private ?string $username = null;
+
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Dive::class, orphanRemoval: true)]
     #[Groups(['read:User'])]
     private Collection $dives;
+
     public function __construct()
     {
         $this->dives = new ArrayCollection();

@@ -47,40 +47,50 @@ class DivingRole
     #[ORM\Column]
     #[Groups(['read:DiveTheme'])]
     private ?int $id = null;
+
     #[ORM\Column(length: 255)]
     #[Groups(['read:DiveTheme', 'read:DiveThemes', 'write:DiveTheme'])]
     private ?string $label = null;
+
     #[ORM\Column(length: 255)]
     #[Groups(['read:DiveTheme', 'read:DiveThemes', 'write:DiveTheme'])]
     private ?string $token = null;
+
     #[ORM\OneToMany(mappedBy: 'divingRole', targetEntity: Dive::class)]
     private Collection $dives;
+
     public function __construct()
     {
         $this->dives = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getLabel(): ?string
     {
         return $this->label;
     }
+
     public function setLabel(string $label): self
     {
         $this->label = $label;
         return $this;
     }
+
     public function getToken(): ?string
     {
         return $this->token;
     }
+
     public function setToken(string $token): self
     {
         $this->token = $token;
         return $this;
     }
+
     /**
      * @return Collection<int, Dive>
      */
@@ -88,6 +98,7 @@ class DivingRole
     {
         return $this->dives;
     }
+
     public function addDive(Dive $dive): self
     {
         if (!$this->dives->contains($dive)) {
@@ -96,6 +107,7 @@ class DivingRole
         }
         return $this;
     }
+
     public function removeDive(Dive $dive): self
     {
         if ($this->dives->removeElement($dive)) {
