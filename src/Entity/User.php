@@ -89,23 +89,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['write:User'])]
     private ?string $avatar = null;
 
+    #[ORM\Column]
+    #[Groups(['read:User'])]
+    private ?\DateTimeImmutable $subscribedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['read:User'])]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    #[Groups(['read:User'])]
+    private ?\DateTimeImmutable $activatedAt = null;
+
     public function __construct()
     {
         $this->dives = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
     }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -115,6 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->email;
     }
+
     /**
      * @see UserInterface
      */
@@ -125,15 +142,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
         return $this;
     }
+
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles());
     }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -141,20 +161,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->password;
     }
+
     public function setPassword(string $password): self
     {
         $this->password = $password;
         return $this;
     }
+
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
+
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
         return $this;
     }
+
     /**
      * @see UserInterface
      */
@@ -162,15 +186,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = null;
     }
+
     public function getUsername(): ?string
     {
         return $this->username;
     }
+
     public function setUsername(string $username): self
     {
         $this->username = $username;
         return $this;
     }
+
     /**
      * @return Collection<int, Dive>
      */
@@ -178,6 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->dives;
     }
+
     public function addDive(Dive $dive): self
     {
         if (!$this->dives->contains($dive)) {
@@ -186,6 +214,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         return $this;
     }
+
     public function removeDive(Dive $dive): self
     {
         if ($this->dives->removeElement($dive)) {
@@ -205,6 +234,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getSubscribedAt(): ?\DateTimeImmutable
+    {
+        return $this->subscribedAt;
+    }
+
+    public function setSubscribedAt(\DateTimeImmutable $subscribedAt): self
+    {
+        $this->subscribedAt = $subscribedAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getActivatedAt(): ?\DateTimeImmutable
+    {
+        return $this->activatedAt;
+    }
+
+    public function setActivatedAt(\DateTimeImmutable $activatedAt): self
+    {
+        $this->activatedAt = $activatedAt;
 
         return $this;
     }

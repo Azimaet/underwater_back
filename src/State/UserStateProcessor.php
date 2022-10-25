@@ -12,20 +12,23 @@ class UserStateProcessor implements ProcessorInterface
 {
     private $_entityManager;
     private $_passwordEncoder;
-    private $_security;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordEncoder,
-        Security $security,
     ) {
         $this->_entityManager = $entityManager;
         $this->_passwordEncoder = $passwordEncoder;
-        $this->_security = $security;
     }
 
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+        if ($operation->getName() === 'create') {
+            $data->setCreatedAt(new \DateTimeImmutable());
+        } else if ($operation->getName() === 'update') {
+            $data->setUpdatedAt(new \DateTimeImmutable());
+        }
+
         if ($data->getPlainPassword()) {
             $data->setPassword(
                 $this->_passwordEncoder->hashPassword(

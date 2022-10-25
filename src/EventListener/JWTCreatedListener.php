@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
+use Doctrine\ORM\EntityManagerInterface;
 
 class JWTCreatedListener
 {
@@ -11,13 +12,17 @@ class JWTCreatedListener
      * @var RequestStack
      */
     private $requestStack;
+    private $_entityManager;
 
     /**
      * @param RequestStack $requestStack
      */
-    public function __construct(RequestStack $requestStack)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        EntityManagerInterface $entityManager,
+    ) {
         $this->requestStack = $requestStack;
+        $this->_entityManager = $entityManager;
     }
 
     /**
@@ -30,9 +35,10 @@ class JWTCreatedListener
         $request = $this->requestStack->getCurrentRequest();
 
         $payload = $event->getData();
-        $payload['username'] = $event->getUser()->getUsername();
-        $payload['id'] = $event->getUser()->getId();
-        $payload['avatar'] = $event->getUser()->getAvatar();
+        $user = $event->getUser();
+        $payload['username'] = $user->getUsername();
+        $payload['id'] = $user->getId();
+        $payload['avatar'] = $user->getAvatar();
 
         $event->setData($payload);
 
@@ -40,5 +46,10 @@ class JWTCreatedListener
         $header['cty'] = 'JWT';
 
         $event->setHeader($header);
+
+        $user->setActivatedAt(new \DateTimeImmutable());
+
+        $this->_entityManager->persist($user);
+        $this->_entityManager->flush();
     }
 }
