@@ -24,7 +24,8 @@ class UserStateProcessor implements ProcessorInterface
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         if ($operation->getName() === 'create') {
-            $data->setCreatedAt(new \DateTimeImmutable());
+            $data->setSubscribedAt(new \DateTimeImmutable());
+            $data->setActivatedAt(new \DateTimeImmutable());
         } else if ($operation->getName() === 'update') {
             $data->setUpdatedAt(new \DateTimeImmutable());
         }
