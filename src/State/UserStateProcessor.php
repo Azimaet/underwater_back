@@ -2,6 +2,7 @@
 
 namespace App\State;
 
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\State\ProcessorInterface;
@@ -11,13 +12,16 @@ class UserStateProcessor implements ProcessorInterface
 {
     private $_entityManager;
     private $_passwordEncoder;
+    private $_security;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordEncoder
+        UserPasswordHasherInterface $passwordEncoder,
+        Security $security,
     ) {
         $this->_entityManager = $entityManager;
         $this->_passwordEncoder = $passwordEncoder;
+        $this->_security = $security;
     }
 
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
