@@ -42,7 +42,8 @@ use ApiPlatform\Metadata\ApiResource;
         ),
         new Mutation(
             name: 'delete',
-            security: 'is_granted("USER_DELETE", object)'
+            security: 'is_granted("USER_DELETE", object)',
+            processor: UserStateProcessor::class
         )
     ])
 ]

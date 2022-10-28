@@ -30,20 +30,29 @@ class UserStateProcessor implements ProcessorInterface
             $data->setUpdatedAt(new \DateTimeImmutable());
         }
 
-        if ($data->getPlainPassword()) {
-            $data->setPassword(
-                $this->_passwordEncoder->hashPassword(
-                    $data,
-                    $data->getPlainPassword()
-                )
-            );
+        if ($operation->getName() === 'create' || ($operation->getName() === 'update')) {
+            if ($data->getPlainPassword()) {
+                $data->setPassword(
+                    $this->_passwordEncoder->hashPassword(
+                        $data,
+                        $data->getPlainPassword()
+                    )
+                );
 
-            $data->eraseCredentials();
+                $data->eraseCredentials();
+            }
+
+            $this->_entityManager->persist($data);
+            $this->_entityManager->flush();
+
+            return $data;
         }
 
-        $this->_entityManager->persist($data);
-        $this->_entityManager->flush();
+        if (($operation->getName() === 'delete')) {
+            $this->_entityManager->remove($data);
+            $this->_entityManager->flush();
 
-        return $data;
+            return $data;
+        }
     }
 }
