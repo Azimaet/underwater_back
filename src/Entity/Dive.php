@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\GraphQl\Mutation;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[
     ApiResource(graphQlOperations: [
@@ -48,8 +49,10 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
         )
     ])
 ]
+
 #[ORM\Entity(repositoryClass: DiveRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['owner' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['date'], arguments: ['orderParameterName' => 'order'])]
 class Dive
 {
     #[ORM\Id]
