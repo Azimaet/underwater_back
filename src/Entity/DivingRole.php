@@ -49,11 +49,11 @@ class DivingRole
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:DiveTheme', 'read:DiveThemes', 'write:DiveTheme'])]
+    #[Groups(['read:DiveTheme', 'read:DiveThemes', 'read:Dives', 'write:DiveTheme'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:DiveTheme', 'read:DiveThemes', 'write:DiveTheme'])]
+    #[Groups(['read:DiveTheme', 'read:DiveThemes', 'read:Dives', 'write:DiveTheme'])]
     private ?string $token = null;
 
     #[ORM\OneToMany(mappedBy: 'divingRole', targetEntity: Dive::class)]
