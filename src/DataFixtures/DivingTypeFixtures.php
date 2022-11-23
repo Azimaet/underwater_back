@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\DivingType;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\DivingType;
 
 class DivingTypeFixtures extends Fixture
 {
@@ -18,7 +18,6 @@ class DivingTypeFixtures extends Fixture
         'Rescue',
         'Wildlife Rescue',
         'Reef Cleaning',
-        'Technical and Operations',
         'Nightdiving'
     ];
 
@@ -31,7 +30,6 @@ class DivingTypeFixtures extends Fixture
         'rescue',
         'wildlife',
         'reef',
-        'technical',
         'night',
     ];
 
