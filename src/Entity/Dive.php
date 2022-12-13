@@ -73,9 +73,9 @@ class Dive
     #[Groups(['read:Dive'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column]
     #[Groups(['read:Dive', 'read:Dives', 'write:Dive'])]
@@ -179,12 +179,12 @@ class Dive
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(\DateTimeImmutable $date): self
     {
         $this->date = $date;
 
