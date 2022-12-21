@@ -37,6 +37,16 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
+5/ Gen keypair for JWT
+```sh
+php bin/console lexik:jwt:generate-keypair
+```
+
+6/ Run Project TLS on SSL
+```sh
+symfony server:ca:install
+```
+
 ## Development
 
 1/ Run project:
