@@ -16,6 +16,8 @@ class UserFixtures extends Fixture
         $admin->setEmail('admin@admin.fr');
         $admin->setUsername('Superadmin');
         $admin->setRoles(['ROLE_SUPER_ADMIN']);
+        $admin->setSubscribedAt(new \DateTimeImmutable());
+        $admin->setActivatedAt(new \DateTimeImmutable());
         $admin->setPassword('$2y$13$WBwnDgO7UPA3Rc6OPrYjK.MY6X207GJu4uZf5l93UloThPa9yPVIq');
         $manager->persist($admin);
 
