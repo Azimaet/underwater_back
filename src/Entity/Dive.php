@@ -45,7 +45,8 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         ),
         new Mutation(
             name: 'delete',
-            security: 'is_granted("DIVE_DELETE", object)'
+            security: 'is_granted("DIVE_DELETE", object)',
+            processor: DiveStateProcessor::class
         )
     ])
 ]

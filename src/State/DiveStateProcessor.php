@@ -21,7 +21,6 @@ class DiveStateProcessor implements ProcessorInterface
         Security $security
     ) {
         $this->_entityManager = $entityManager;
-        $this->_request = $request->getCurrentRequest();
         $this->_security = $security;
     }
 
@@ -32,13 +31,27 @@ class DiveStateProcessor implements ProcessorInterface
             $uuid = Uuid::v1();
             $data->setUuid($uuid);
             $data->setOwner($this->_security->getUser());
-        } else {
-            $data->setUpdatedAt(new \DateTimeImmutable());
+
+            $this->_entityManager->persist($data);
+            $this->_entityManager->flush();
+
+            return $data;
         }
 
-        $this->_entityManager->persist($data);
-        $this->_entityManager->flush();
+        if ($operation->getName() === 'update') {
+            $data->setUpdatedAt(new \DateTimeImmutable());
 
-        return $data;
+            $this->_entityManager->persist($data);
+            $this->_entityManager->flush();
+
+            return $data;
+        }
+
+        if ($operation->getName() === 'delete') {
+            $this->_entityManager->remove($data);
+            $this->_entityManager->flush();
+
+            return $data;
+        }
     }
 }
