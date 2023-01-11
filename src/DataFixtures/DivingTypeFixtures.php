@@ -10,7 +10,6 @@ use App\Entity\DivingType;
 class DivingTypeFixtures extends Fixture
 {
     const ENV_LABELS = [
-        'Dive',
         'Cave Diving',
         'Ice Diving',
         'Shipwreck Diving',
@@ -22,7 +21,6 @@ class DivingTypeFixtures extends Fixture
     ];
 
     const ENV_TOKENS = [
-        'default',
         'cave',
         'ice',
         'wreck',
