@@ -34,7 +34,7 @@ class StatsController extends AbstractController
                 'longestDive' => $longest_dive,
                 'deepestDive' => $deepest_dive,
                 'totalUsers' => $total_users,
-                'firstUserSubscribed' => $firstSubscribedUser,
+                'firstSubscribedUser' => $firstSubscribedUser,
                 'lastSubscribedUser' => $lastSubscribedUser,
                 'mostActiveDiver' => $mostActiveDiver,
             ]
